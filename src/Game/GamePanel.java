@@ -12,22 +12,23 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
-	GameObject go;
 	Timer tim;
+	ObjectManager om;
+	Player p;
 
 	GamePanel() {
-		go = new GameObject(200, 200, 20, 20);
+		
 		tim = new Timer(1000 / 60, this);
 		tim.start();
+		om = new ObjectManager();
+		p = new Player(200, 200, 20, 20);
 	}
 
-	void draw(Graphics g) {
-
-	}
 
 	@Override
 	public void paintComponent(Graphics g) {
-		go.draw(g);
+	om.draw(g);
+	p.draw(g);
 
 	}
 
@@ -72,13 +73,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		char key = e.getKeyChar();
 		// TODO Auto-generated method stub
 		if (key == 'a') {
-			go.left = true;
+			p.left = true;
 		}
 		if (key == 'd') {
-			go.right = true;
+			p.right = true;
 		}
 		if (key == ' ') {
-				go.jump();
+			if (p.air < 2) {
+				p.jump();
+			}
+			p.air++;
 		}
 
 	}
@@ -88,17 +92,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		// TODO Auto-generated method stub
 		char key = e.getKeyChar();
 		if (key == 'a') {
-			go.left = false;
+			p.left = false;
 		}
 		if (key == 'd') {
-			go.right = false;
+			p.right = false;
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		go.update();
+		om.update();
+		p.update();
 		repaint();
 	}
 }
