@@ -8,50 +8,58 @@ public class Player extends GameObject {
 	int speed = 5;
 	int velocity = 20;
 	int air = 0;
-	Rectangle collisionBox;
-	boolean left, right, jump;
+	boolean left, right, jump, touch;
+	
+
 	Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
-		
+		touch = false;
+
 	}
 
-
-	void update(){
-	if (left == true) {
-		l();
-	}
-
-	if (right == true) {
-		r();
-	}
-
-	velocity += gravity;
-	y += velocity;
-
-	if (y >= 500) {
-		y = 501;
+	void floor(Platform P) {
+		y = P.y -20;
 		velocity = 0;
 		air = 0;
+		
+
 	}
-	super.update();
-}
-void draw(Graphics g)
-{
-super.draw(g);	
-}
 
+	void update() {
 
-void jump() {
-	velocity = -10;
-}
+		if (left == true) {
+			l();
+		}
 
-void l() {
-	x -= speed;
-	jump = false;
-}
+		if (right == true) {
+			r();
+		}
 
-void r() {
-	x += speed;
-}
+		velocity += gravity;
+		y += velocity;
+		if (y > 800) {
+			y = 0;
+			velocity = 0;
+			air = 0;
+		}
+		super.update();
+	}
+
+	void draw(Graphics g) {
+		super.draw(g);
+	}
+
+	void jump() {
+		velocity = -20;
+	}
+
+	void l() {
+		x -= speed;
+		jump = false;
+	}
+
+	void r() {
+		x += speed;
+	}
 
 }

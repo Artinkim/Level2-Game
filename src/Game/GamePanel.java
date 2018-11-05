@@ -17,18 +17,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	Player p;
 
 	GamePanel() {
-		
+
 		tim = new Timer(1000 / 60, this);
 		tim.start();
-		om = new ObjectManager();
 		p = new Player(200, 200, 20, 20);
+		om = new ObjectManager(p);
 	}
-
 
 	@Override
 	public void paintComponent(Graphics g) {
-	om.draw(g);
-	p.draw(g);
+		om.draw(g);
+		p.draw(g);
 
 	}
 
@@ -81,6 +80,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		if (key == ' ') {
 			if (p.air < 2) {
 				p.jump();
+				p.update();
 			}
 			p.air++;
 		}
@@ -103,6 +103,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		om.update();
+		om.makePlats();
 		p.update();
 		repaint();
 	}

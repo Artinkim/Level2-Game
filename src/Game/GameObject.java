@@ -11,7 +11,6 @@ public class GameObject {
 	int height;
 	Rectangle collisionBox;
 
-
 	GameObject(int a, int b, int c, int d) {
 		x = a;
 		y = b;
@@ -22,11 +21,11 @@ public class GameObject {
 	}
 
 	void update() {
-			collisionBox.setBounds(x, y, width, height);
+		collisionBox.setBounds(x, y, width, height);
 	}
 
 	void draw(Graphics g) {
-		g.setColor(new Color(255, 0, 0));
+		g.setColor(new Color(0, 0, 255));
 		g.fillRect(x, y, width, height);
-}
+	}
 }
