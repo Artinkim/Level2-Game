@@ -1,5 +1,6 @@
 package Game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -21,8 +22,6 @@ public class Player extends GameObject {
 		y = P.y -20;
 		velocity = 0;
 		air = 0;
-		
-
 	}
 
 	void update() {
@@ -43,14 +42,16 @@ public class Player extends GameObject {
 			air = 0;
 		}
 		super.update();
+		x--;
 	}
 
 	void draw(Graphics g) {
+		g.setColor(new Color(0, 0, 255));
 		super.draw(g);
 	}
 
 	void jump() {
-		velocity = -20;
+		velocity = -15;
 	}
 
 	void l() {

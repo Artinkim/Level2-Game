@@ -1,24 +1,27 @@
 package Game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
-public class Platform extends GameObject {
+public class Coin extends GameObject {
 	Random rand = new Random();
+	int r = rand.nextInt(2) + 3;
 
-	Platform(int a, int b, int c, int d) {
+	Coin(int a, int b, int c, int d) {
 		super(a, b, c, d);
-		y = rand.nextInt(300) + 300;
 		// TODO Auto-generated constructor stub
+		x = rand.nextInt(1000) + 100;
 	}
 
 	void update() {
-		x--;
+		y += r;
 		super.update();
 	}
 
 	void draw(Graphics g) {
+		g.setColor(new Color(255, 223, 0));
 		super.draw(g);
-
 	}
+
 }

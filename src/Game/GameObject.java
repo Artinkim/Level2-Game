@@ -25,7 +25,6 @@ public class GameObject {
 	}
 
 	void draw(Graphics g) {
-		g.setColor(new Color(0, 0, 255));
 		g.fillRect(x, y, width, height);
 	}
 }

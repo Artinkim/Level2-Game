@@ -104,6 +104,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		// TODO Auto-generated method stub
 		om.update();
 		om.makePlats();
+		om.makeProjectilesR();
+		om.makeCoins();
 		p.update();
 		repaint();
 	}
