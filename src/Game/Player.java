@@ -15,7 +15,6 @@ public class Player extends GameObject {
 	Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
 		touch = false;
-
 	}
 
 	void floor(Platform P) {

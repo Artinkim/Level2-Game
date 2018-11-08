@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JTextPane;
+
 public class ObjectManager {
 	ArrayList<Platform> plats = new ArrayList<Platform>();
 	ArrayList<CannonProjectile> projectiles = new ArrayList<CannonProjectile>();
@@ -30,7 +32,7 @@ public class ObjectManager {
 	}
 
 	void makeProjectilesR() {
-		if (System.currentTimeMillis() - enemyTimer2 >= projectileSpawnTime) {
+		if (System.currentTimeMillis() - enemyTimer2 >= projectileSpawnTime-score*200) {
 			projectiles.add(new CannonProjectile(1300, 0, 20, 20, p.x, p.y));
 			enemyTimer2 = System.currentTimeMillis();
 		}
@@ -73,11 +75,15 @@ public class ObjectManager {
 				p.x = 0;
 			}
 		}
-		for (Coin n : coins) {
-			n.update();
-			if (n.collisionBox.intersects(p.collisionBox)) {
+		for (int j = 0; j < coins.size(); j++)
+
+		{
+			coins.get(j).update();
+			if (coins.get(j).collisionBox.intersects(p.collisionBox)) {
 				score++;
-				coins.remove(n);
+				System.out.println(score);
+			
+				coins.remove(coins.get(j));
 			}
 
 		}

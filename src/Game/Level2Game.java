@@ -2,6 +2,7 @@ package Game;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
 
 public class Level2Game {
 	public static void main(String[] args) {
@@ -20,10 +21,10 @@ public class Level2Game {
 
 	void setup() {
 		frame.setVisible(true);
-		frame.setSize(width, height);
 		frame.add(gpanel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addKeyListener(gpanel);
 		frame.addMouseListener(gpanel);
+		frame.setSize(width, height);
 	}
 }
