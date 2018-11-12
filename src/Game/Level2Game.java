@@ -13,7 +13,6 @@ public class Level2Game {
 	GamePanel gpanel;
 	final int width = 1200;
 	final int height = 800;
-
 	Level2Game() {
 		frame = new JFrame();
 		gpanel = new GamePanel();

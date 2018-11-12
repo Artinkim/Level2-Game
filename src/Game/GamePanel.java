@@ -1,5 +1,7 @@
 package Game;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,24 +13,60 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import javafx.scene.input.KeyCode;
+
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	Timer tim;
 	ObjectManager om;
 	Player p;
+	int state = 1;
 
 	GamePanel() {
-
+	
 		tim = new Timer(1000 / 60, this);
 		tim.start();
 		p = new Player(200, 200, 20, 20);
 		om = new ObjectManager(p);
+
+	}
+
+	void drawMenu(Graphics g) {
+		g.setColor(new Color(0, 0, 0));
+		g.fillRect(0, 0, 2000, 2000);
+		g.setColor(new Color(255, 0, 0));
+		g.setFont(new Font("Monospaced", Font.BOLD, 80));
+		g.drawString("Stay alive", 400, 250);
+		g.setFont(new Font("Monospaced", Font.BOLD, 20));
+		g.drawString("In this game you try to stay alive and collect coins to get a higher score.", 100, 350);
+		g.drawString("You have powerups to help you along the way ", 100, 400);
+
+	}
+
+	void drawGame(Graphics g) {
+		om.draw(g);
+		p.draw(g);
+		g.drawString(" " + om.score, 20, 20);
+		g.drawString(" " + p.lives, 50, 20);
+	
+
+	}
+
+	void drawEnd(Graphics g) {
+		g.drawString("You got" + om.score, 200, 200);
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
-		om.draw(g);
-		p.draw(g);
 
+		if (state == 1) {
+			drawMenu(g);
+
+		} else if (state == 2) {
+			drawGame(g);
+
+		} else if (state == 3) {
+			drawEnd(g);
+		}
 	}
 
 	@Override
@@ -69,20 +107,28 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		char key = e.getKeyChar();
+
 		// TODO Auto-generated method stub
-		if (key == 'a') {
+		if (e.getKeyCode() == KeyEvent.VK_A) {
 			p.left = true;
 		}
-		if (key == 'd') {
+		if (e.getKeyCode() == KeyEvent.VK_D) {
 			p.right = true;
 		}
-		if (key == ' ') {
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			if (p.air < 2) {
 				p.jump();
 				p.update();
 			}
 			p.air++;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+			if (state > 2) {
+				state = 1;
+			} else {
+				state++;
+			}
 		}
 
 	}
@@ -103,6 +149,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		om.update();
+		om.makeFloor();
 		om.makePlats();
 		om.makeProjectilesR();
 		om.makeCoins();

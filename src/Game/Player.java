@@ -9,8 +9,8 @@ public class Player extends GameObject {
 	int speed = 5;
 	int velocity = 20;
 	int air = 0;
+	int lives = 3;
 	boolean left, right, jump, touch;
-	
 
 	Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
@@ -18,7 +18,13 @@ public class Player extends GameObject {
 	}
 
 	void floor(Platform P) {
-		y = P.y -20;
+		y = P.y - 20;
+		velocity = 0;
+		air = 0;
+	}
+	
+	void floor(floor P) {
+		y = P.y - 20;
 		velocity = 0;
 		air = 0;
 	}
@@ -36,9 +42,17 @@ public class Player extends GameObject {
 		velocity += gravity;
 		y += velocity;
 		if (y > 800) {
+			lives--;
 			y = 0;
 			velocity = 0;
 			air = 0;
+
+		}
+		if (x < 0) {
+			x = 0;
+		}
+		if (x > 1200) {
+			x = 1200;
 		}
 		super.update();
 		x--;
