@@ -35,7 +35,7 @@ public class ObjectManager {
 
 	void makePlats() {
 		if (System.currentTimeMillis() * speed - enemyTimer >= enemySpawnTime) {
-			plats.add(new Platform(1400, rand.nextInt(400) + 100, rand.nextInt(40) + 30, 5));
+			plats.add(new Platform(1400, rand.nextInt(400) + 100, rand.nextInt(40) + 30, 10));
 			enemyTimer = System.currentTimeMillis();
 		}
 
