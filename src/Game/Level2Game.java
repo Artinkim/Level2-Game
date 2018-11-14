@@ -23,7 +23,6 @@ public class Level2Game {
 		frame.add(gpanel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addKeyListener(gpanel);
-		frame.addMouseListener(gpanel);
 		frame.setSize(width, height);
 	}
 }

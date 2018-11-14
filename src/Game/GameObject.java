@@ -9,6 +9,7 @@ public class GameObject {
 	int y;
 	int width;
 	int height;
+	int speed;
 	Rectangle collisionBox;
 
 	GameObject(int a, int b, int c, int d) {
@@ -22,6 +23,7 @@ public class GameObject {
 
 	void update() {
 		collisionBox.setBounds(x, y, width, height);
+		x-=speed;
 	}
 
 	void draw(Graphics g) {

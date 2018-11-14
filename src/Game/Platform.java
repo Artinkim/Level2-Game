@@ -8,13 +8,7 @@ public class Platform extends GameObject {
 
 	Platform(int a, int b, int c, int d) {
 		super(a, b, c, d);
-		y = rand.nextInt(300) + 300;
 		// TODO Auto-generated constructor stub
-	}
-
-	void update() {
-		x--;
-		super.update();
 	}
 
 	void draw(Graphics g) {

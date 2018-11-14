@@ -22,7 +22,7 @@ public class Player extends GameObject {
 		velocity = 0;
 		air = 0;
 	}
-	
+
 	void floor(floor P) {
 		y = P.y - 20;
 		velocity = 0;
@@ -34,7 +34,7 @@ public class Player extends GameObject {
 		if (left == true) {
 			l();
 		}
-
+		
 		if (right == true) {
 			r();
 		}
@@ -42,20 +42,16 @@ public class Player extends GameObject {
 		velocity += gravity;
 		y += velocity;
 		if (y > 800) {
-			lives--;
-			y = 0;
-			velocity = 0;
-			air = 0;
+			lives = 0;
 
 		}
 		if (x < 0) {
 			x = 0;
 		}
-		if (x > 1200) {
-			x = 1200;
+		if (x > 1150) {
+			x = 1150;
 		}
 		super.update();
-		x--;
 	}
 
 	void draw(Graphics g) {

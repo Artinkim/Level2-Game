@@ -21,7 +21,7 @@ public class CannonProjectile extends GameObject {
 	}
 
 	void update() {
-		x -= 3;
+x-=speed;
 		super.update();
 	}
 
