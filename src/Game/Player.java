@@ -6,15 +6,17 @@ import java.awt.Rectangle;
 
 public class Player extends GameObject {
 	int gravity = 1;
-	int speed = 5;
+	int mspeed = 5;
 	int velocity = 20;
 	int air = 0;
 	int lives = 3;
+	int jumps = 2;
 	boolean left, right, jump, touch;
 
 	Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
 		touch = false;
+		speed = 1;
 	}
 
 	void floor(Platform P) {
@@ -64,12 +66,12 @@ public class Player extends GameObject {
 	}
 
 	void l() {
-		x -= speed;
+		x -= mspeed;
 		jump = false;
 	}
 
 	void r() {
-		x += speed;
+		x += mspeed;
 	}
 
 }

@@ -12,15 +12,16 @@ public class ObjectManager {
 	ArrayList<Coin> coins = new ArrayList<Coin>();
 	ArrayList<floor> floors = new ArrayList<floor>();
 	ArrayList<TimePowerUp> TPowers = new ArrayList<TimePowerUp>();
+	ArrayList<JumpPowerUp> JPowers = new ArrayList<JumpPowerUp>();
 	Player p;
 	long T;
 	Random rand = new Random();
-	long enemyTimer = -5000;
-	long enemyTimer2 = 0;
-	long enemyTimer3 = -5000;
-	long enemyTimer4 = 0;
-	long enemyTimer5 = -5000;
-
+	long enemyTimer = 0;
+	long enemyTimer2 = System.currentTimeMillis();
+	long enemyTimer3 = System.currentTimeMillis();
+	long enemyTimer4 = System.currentTimeMillis();
+	long enemyTimer5 = System.currentTimeMillis();
+	long enemyTimer6 = System.currentTimeMillis();
 	int enemySpawnTime = 1000;
 	int floorSpawnTime = 1500;
 	int projectileSpawnTime = 2000;
@@ -45,6 +46,11 @@ public class ObjectManager {
 		if (System.currentTimeMillis() * speed - enemyTimer5 >= rand.nextInt(15000) + 15000) {
 			TPowers.add(new TimePowerUp(0, 0, 20, 20));
 			enemyTimer5 = System.currentTimeMillis();
+		}
+
+		if (System.currentTimeMillis() * speed - enemyTimer6 >= rand.nextInt(5000)+25000){
+			JPowers.add(new JumpPowerUp(0, 0, 20, 20));
+			enemyTimer6 = System.currentTimeMillis();
 		}
 
 	}
@@ -90,11 +96,25 @@ public class ObjectManager {
 		for (TimePowerUp n : TPowers) {
 			n.draw(g);
 		}
+		for (JumpPowerUp n : JPowers) {
+			n.draw(g);
+		}
 	}
 
 	void update() {
+		p.speed = speed;
 		f.update();
 		f.speed = speed;
+
+		for (int j = 0; j < JPowers.size(); j++) {
+			JPowers.get(j).speed = speed;
+			JPowers.get(j).update();
+			if (JPowers.get(j).collisionBox.intersects(p.collisionBox)) {
+				p.jumps++;
+				JPowers.remove(JPowers.get(j));
+			}
+		}
+
 		if (f.collisionBox.intersects(p.collisionBox)) {
 			p.floor(f);
 		}
@@ -150,7 +170,7 @@ public class ObjectManager {
 				if (projectileSpawnTime <= 400) {
 					projectileSpawnTime = 400;
 				} else {
-					projectileSpawnTime -= 50;
+					projectileSpawnTime -= 100;
 				}
 				coins.remove(coins.get(j));
 			}

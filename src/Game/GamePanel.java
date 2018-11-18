@@ -8,6 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -18,6 +22,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	ObjectManager om;
 	Player p;
 	int state = 1;
+	public static BufferedImage player;
 
 	GamePanel() {
 
@@ -25,6 +30,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		tim.start();
 		p = new Player(200, 200, 20, 20);
 		om = new ObjectManager(p);
+		
+		try {
+			player = ImageIO.read(this.getClass().getResourceAsStream("space.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 	}
 
@@ -42,7 +55,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void drawGame(Graphics g) {
 		om.draw(g);
-		p.draw(g);
+		g.drawImage(player, p.x,p.y,p.width,p.height, null);
 		g.drawString(" " + om.score, 20, 20);
 		g.drawString(" " + p.lives, 50, 20);
 
@@ -85,7 +98,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			p.right = true;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			if (p.air < 2) {
+			if (p.air < p.jumps) {
 				p.jump();
 				p.update();
 			}
