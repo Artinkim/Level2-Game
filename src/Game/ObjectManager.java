@@ -27,6 +27,7 @@ public class ObjectManager {
 	int projectileSpawnTime = 2000;
 	int score = 0;
 	int speed = 1;
+	int MS = 1;
 
 	floor f = new floor(0, 600, 1400, 25);
 
@@ -38,6 +39,7 @@ public class ObjectManager {
 		if (System.currentTimeMillis() * speed - enemyTimer >= enemySpawnTime) {
 			plats.add(new Platform(1400, rand.nextInt(400) + 100, rand.nextInt(40) + 30, 10));
 			enemyTimer = System.currentTimeMillis();
+			speed+=1;
 		}
 
 	}
@@ -124,6 +126,7 @@ public class ObjectManager {
 			TPowers.get(j).update();
 			if (TPowers.get(j).collisionBox.intersects(p.collisionBox)) {
 				T = System.currentTimeMillis();
+				MS = speed;
 				speed = 0;
 				TPowers.get(j).speed = speed;
 				TPowers.remove(TPowers.get(j));
@@ -132,7 +135,7 @@ public class ObjectManager {
 		}
 
 		if (System.currentTimeMillis() - 5000 >= T) { // For time power up length
-			speed = 1;
+			speed = MS;
 		}
 
 		for (Platform n : plats) {

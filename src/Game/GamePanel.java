@@ -30,14 +30,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		tim.start();
 		p = new Player(200, 200, 20, 20);
 		om = new ObjectManager(p);
-		
+
 		try {
-			player = ImageIO.read(this.getClass().getResourceAsStream("space.png"));
+			player = ImageIO.read(this.getClass().getResourceAsStream("space.jpeg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
@@ -48,14 +47,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(new Font("Monospaced", Font.BOLD, 80));
 		g.drawString("Stay alive", 400, 250);
 		g.setFont(new Font("Monospaced", Font.BOLD, 20));
-		g.drawString("In this game you try to stay alive and collect coins to get a higher score.", 100, 350);
-		g.drawString("You have powerups to help you along the way ", 100, 400);
-
+		g.drawString("In this game you try to stay alive and collect coins to get a higher score.", 50, 350);
+		g.drawString("You start off with 3 lives if you get hit by the ROCKETS you loose one life", 50, 400);
+		g.drawString("Falling into the void instantly kills you. You have powerups to help you along the way" , 50, 450);
+		g.drawString("TIME stops time for 5 seconds, and JUMP adds another jump to your origional double jump(Jump Power Ups Stack)", 50, 500);
+		g.drawString("You also have a teleporter beams at the bottom that teleport you to the top of the screen", 50, 550);
 	}
 
 	void drawGame(Graphics g) {
 		om.draw(g);
-		g.drawImage(player, p.x,p.y,p.width,p.height, null);
+		p.draw(g);
 		g.drawString(" " + om.score, 20, 20);
 		g.drawString(" " + p.lives, 50, 20);
 
@@ -72,9 +73,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		if (state == 1) {
 			drawMenu(g);
+			p = new Player(200, 200, 20, 20);
+			om = new ObjectManager(p);
 
 		} else if (state == 2) {
 			drawGame(g);
+			
 
 		} else if (state == 3) {
 			drawEnd(g);
@@ -99,8 +103,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			if (p.air < p.jumps) {
-				p.jump();
-				p.update();
+			p.jumping = true;
 			}
 			p.air++;
 		}
@@ -111,18 +114,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				state++;
 			}
 		}
+		System.out.println(e.getKeyCode()+"pressed");
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		char key = e.getKeyChar();
-		if (key == 'a') {
+		if (e.getKeyCode() == KeyEvent.VK_A) {
 			p.left = false;
 		}
-		if (key == 'd') {
+		if (e.getKeyCode() == KeyEvent.VK_D) {
 			p.right = false;
 		}
+		System.out.println(e.getKeyCode());
 	}
 
 	@Override
@@ -130,9 +134,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		if (p.lives <= 0) {
 			state = 3;
-			p.y = 0;
-			p.lives = 3;
 		}
+		if(state == 2) {
 		om.update();
 		om.makeFloor();
 		om.makePowerUps();
@@ -140,6 +143,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		om.makeProjectilesR();
 		om.makeCoins();
 		p.update();
+		}
 		repaint();
 	}
 }

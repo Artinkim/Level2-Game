@@ -11,7 +11,7 @@ public class Player extends GameObject {
 	int air = 0;
 	int lives = 3;
 	int jumps = 2;
-	boolean left, right, jump, touch;
+	boolean left, right, jump, touch, jumping;
 
 	Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
@@ -32,11 +32,14 @@ public class Player extends GameObject {
 	}
 
 	void update() {
-
+		if (jumping == true) {
+			jump();
+			jumping = false;
+		}
 		if (left == true) {
 			l();
 		}
-		
+
 		if (right == true) {
 			r();
 		}
@@ -57,8 +60,7 @@ public class Player extends GameObject {
 	}
 
 	void draw(Graphics g) {
-		g.setColor(new Color(0, 0, 255));
-		super.draw(g);
+		g.drawImage(GamePanel.player, x, y, width, height, null);
 	}
 
 	void jump() {
