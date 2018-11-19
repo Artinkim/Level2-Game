@@ -20,8 +20,7 @@ public class Coin extends GameObject {
 	}
 
 	void draw(Graphics g) {
-		g.setColor(new Color(255, 223, 0));
-		g.fillOval(x, y, width, height);
+		g.drawImage(GamePanel.coin,x,y,width,height,null);
 	}
 
 }

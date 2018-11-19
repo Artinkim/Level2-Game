@@ -23,6 +23,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Player p;
 	int state = 1;
 	public static BufferedImage player;
+	public static BufferedImage timepower;
+	public static BufferedImage jumppower;
+	public static BufferedImage coin;
 
 	GamePanel() {
 
@@ -33,6 +36,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		try {
 			player = ImageIO.read(this.getClass().getResourceAsStream("space.jpeg"));
+			timepower = ImageIO.read(this.getClass().getResourceAsStream("clock.jpg"));
+			jumppower = ImageIO.read(this.getClass().getResourceAsStream("up_arrow.png"));
+			coin = ImageIO.read(this.getClass().getResourceAsStream("coin.jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
