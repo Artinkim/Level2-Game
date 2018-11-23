@@ -20,8 +20,7 @@ public class JumpPowerUp extends GameObject {
 	}
 
 	void draw(Graphics g) {
-		g.setColor(new Color(0,255, 255));
-		g.fillOval(x, y, width, height);
+		g.drawImage(GamePanel.jumppower,x,y,width,height,null);
 	}
 
 }

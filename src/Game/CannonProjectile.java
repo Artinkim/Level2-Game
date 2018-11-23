@@ -8,16 +8,14 @@ public class CannonProjectile extends GameObject {
 	Random rand = new Random();
 	int r;
 
-	CannonProjectile(int a, int b, int c, int d, int px, int py) {
+	CannonProjectile(int a, int b, int c, int d) {
 		super(a, b, c, d);
-		y = rand.nextInt(600) + 100;
 		// TODO Auto-generated constructor stub
 
 	}
 
 	void draw(Graphics g) {
-		g.setColor(new Color(255, 0, 0));
-		super.draw(g);
+		g.drawImage(GamePanel.projectile, x, y, width, height, null);
 	}
 
 	void update() {

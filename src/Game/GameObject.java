@@ -9,7 +9,7 @@ public class GameObject {
 	int y;
 	int width;
 	int height;
-	int speed;
+	double speed;
 	Rectangle collisionBox;
 
 	GameObject(int a, int b, int c, int d) {

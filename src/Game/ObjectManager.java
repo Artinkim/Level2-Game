@@ -1,5 +1,6 @@
 package Game;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,11 +11,13 @@ public class ObjectManager {
 	ArrayList<Platform> plats = new ArrayList<Platform>();
 	ArrayList<CannonProjectile> projectiles = new ArrayList<CannonProjectile>();
 	ArrayList<Coin> coins = new ArrayList<Coin>();
-	ArrayList<floor> floors = new ArrayList<floor>();
+	ArrayList<Portal> Portals = new ArrayList<Portal>();
 	ArrayList<TimePowerUp> TPowers = new ArrayList<TimePowerUp>();
 	ArrayList<JumpPowerUp> JPowers = new ArrayList<JumpPowerUp>();
+	ArrayList<HealthPowerUp> HPowers = new ArrayList<HealthPowerUp>();
 	Player p;
-	long T;
+	long Tim = System.currentTimeMillis();
+	long Draw = System.currentTimeMillis();
 	Random rand = new Random();
 	long enemyTimer = 0;
 	long enemyTimer2 = System.currentTimeMillis();
@@ -22,55 +25,81 @@ public class ObjectManager {
 	long enemyTimer4 = System.currentTimeMillis();
 	long enemyTimer5 = System.currentTimeMillis();
 	long enemyTimer6 = System.currentTimeMillis();
+	long enemyTimer7 = System.currentTimeMillis();
+	long scoreTime = System.currentTimeMillis();
 	int enemySpawnTime = 1000;
-	int floorSpawnTime = 1500;
+	int PortalspawnTime = 1500;
 	int projectileSpawnTime = 2000;
 	int score = 0;
-	int speed = 1;
-	int MS = 1;
+	double World = 1;
+	double speed = 1;
+	double MS = 1;
+	boolean time = true;
+	boolean drawWorld = false;
 
-	floor f = new floor(0, 600, 1400, 25);
+	Platform f = new Platform(0, 600, 1400, 15);
 
 	ObjectManager(Player a) {
 		p = a;
 	}
 
+	void Spawners() {
+		if (time == true) {
+			if (drawWorld == false) {
+				makeFloor();
+				makePowerUps();
+				makePlats();
+				makeProjectilesR();
+				score();
+			}
+		}
+	}
+
+	void score() {
+		if (System.currentTimeMillis() - 1000 >= scoreTime) {
+			score += 100;
+			speed += .2;
+			scoreTime = System.currentTimeMillis();
+		}
+	}
+
 	void makePlats() {
-		if (System.currentTimeMillis() * speed - enemyTimer >= enemySpawnTime) {
+		if (System.currentTimeMillis() - enemyTimer >= enemySpawnTime) {
 			plats.add(new Platform(1400, rand.nextInt(400) + 100, rand.nextInt(40) + 30, 10));
 			enemyTimer = System.currentTimeMillis();
-			speed+=1;
 		}
-
 	}
 
 	void makePowerUps() {
-		if (System.currentTimeMillis() * speed - enemyTimer5 >= rand.nextInt(15000) + 15000) {
+		if (System.currentTimeMillis() - enemyTimer5 >= rand.nextInt(15000) + 15000) {
 			TPowers.add(new TimePowerUp(0, 0, 20, 20));
 			enemyTimer5 = System.currentTimeMillis();
 		}
 
-		if (System.currentTimeMillis() * speed - enemyTimer6 >= rand.nextInt(5000)+25000){
+		if (System.currentTimeMillis() - enemyTimer6 >= rand.nextInt(5000) + 25000) {
 			JPowers.add(new JumpPowerUp(0, 0, 20, 20));
 			enemyTimer6 = System.currentTimeMillis();
 		}
 
+		if (System.currentTimeMillis() - enemyTimer7 >= rand.nextInt(15000) + 20000) {
+			HPowers.add(new HealthPowerUp(0, 0, 20, 20));
+			enemyTimer7 = System.currentTimeMillis();
+		}
 	}
 
 	void makeFloor() {
-		if (System.currentTimeMillis() * speed - enemyTimer4 >= rand.nextInt(2000) + 8000) {
-			floors.add(new floor(1300, 700, 50, 25));
+		if (System.currentTimeMillis() - enemyTimer4 >= rand.nextInt(2000) + 8000) {
+			Portals.add(new Portal(1300, 675, 50, 50));
 			enemyTimer4 = System.currentTimeMillis();
 		}
 	}
 
 	void makeProjectilesR() {
 
-		if (System.currentTimeMillis() * speed - enemyTimer2 >= projectileSpawnTime) {
-			projectiles.add(new CannonProjectile(1400, 0, 20, 20, p.x, p.y));
+		if (System.currentTimeMillis() - enemyTimer2 >= projectileSpawnTime) {
+			projectiles.add(new CannonProjectile(1400, rand.nextInt(400) + 100, 60, 15));
 			enemyTimer2 = System.currentTimeMillis();
 		}
-
 	}
 
 	void makeCoins() {
@@ -78,7 +107,6 @@ public class ObjectManager {
 			coins.add(new Coin(0, 0, 20, 20));
 			enemyTimer3 = System.currentTimeMillis();
 		}
-
 	}
 
 	void draw(Graphics g) {
@@ -92,7 +120,7 @@ public class ObjectManager {
 		for (Coin n : coins) {
 			n.draw(g);
 		}
-		for (floor n : floors) {
+		for (Portal n : Portals) {
 			n.draw(g);
 		}
 		for (TimePowerUp n : TPowers) {
@@ -101,12 +129,31 @@ public class ObjectManager {
 		for (JumpPowerUp n : JPowers) {
 			n.draw(g);
 		}
+		for (HealthPowerUp n : HPowers) {
+			n.draw(g);
+		}
+		if (drawWorld == true) {
+			g.setFont(new Font("Monospaced", Font.BOLD, 80));
+			g.drawString("World: " + (World - 1), 600, 400);
+		}
+
+		if (speed > World) {
+			MS = speed;
+			Draw = System.currentTimeMillis();
+			speed = 0;
+			p.speed = 0;
+			p.mspeed = 0;
+			p.velocity = 0;
+			p.gravity = 0;
+			drawWorld = true;
+			World++;
+		}
 	}
 
 	void update() {
 		p.speed = speed;
-		f.update();
 		f.speed = speed;
+		f.update();
 
 		for (int j = 0; j < JPowers.size(); j++) {
 			JPowers.get(j).speed = speed;
@@ -125,17 +172,29 @@ public class ObjectManager {
 			TPowers.get(j).speed = speed;
 			TPowers.get(j).update();
 			if (TPowers.get(j).collisionBox.intersects(p.collisionBox)) {
-				T = System.currentTimeMillis();
 				MS = speed;
+				Tim = System.currentTimeMillis();
 				speed = 0;
-				TPowers.get(j).speed = speed;
+				time = false;
 				TPowers.remove(TPowers.get(j));
 			}
+		}
+		if (time == false) {
+			if (System.currentTimeMillis() - 5000 >= Tim) { // For time power up length
+				time = true;
+				speed = MS;
 
+			}
 		}
 
-		if (System.currentTimeMillis() - 5000 >= T) { // For time power up length
-			speed = MS;
+		if (drawWorld == true) {
+			if (System.currentTimeMillis() - 2000 >= Draw) { // For drawing the new world length
+				speed = MS;
+				p.gravity = 1;
+				p.mspeed = 5;
+				drawWorld = false;
+
+			}
 		}
 
 		for (Platform n : plats) {
@@ -146,13 +205,13 @@ public class ObjectManager {
 			}
 		}
 
-		for (int j = 0; j < floors.size(); j++) {
-			floors.get(j).speed = speed;
-			floors.get(j).update();
-			if (floors.get(j).collisionBox.intersects(p.collisionBox)) {
+		for (int j = 0; j < Portals.size(); j++) {
+			Portals.get(j).speed = speed;
+			Portals.get(j).update();
+			if (Portals.get(j).collisionBox.intersects(p.collisionBox)) {
 				p.y = 0;
 				p.velocity = 0;
-				floors.remove(floors.get(j));
+				Portals.remove(Portals.get(j));
 			}
 		}
 
@@ -169,7 +228,7 @@ public class ObjectManager {
 			coins.get(j).speed = speed;
 			coins.get(j).update();
 			if (coins.get(j).collisionBox.intersects(p.collisionBox)) {
-				score++;
+				score += 1000;
 				if (projectileSpawnTime <= 400) {
 					projectileSpawnTime = 400;
 				} else {
@@ -179,5 +238,15 @@ public class ObjectManager {
 			}
 
 		}
+		for (int j = 0; j < HPowers.size(); j++) {
+			HPowers.get(j).speed = speed;
+			HPowers.get(j).update();
+			if (HPowers.get(j).collisionBox.intersects(p.collisionBox)) {
+				p.lives++;
+				HPowers.remove(HPowers.get(j));
+
+			}
+		}
 	}
+
 }

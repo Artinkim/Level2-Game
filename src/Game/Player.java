@@ -10,7 +10,7 @@ public class Player extends GameObject {
 	int velocity = 20;
 	int air = 0;
 	int lives = 3;
-	int jumps = 2;
+	int jumps = 1;
 	boolean left, right, jump, touch, jumping;
 
 	Player(int a, int b, int c, int d) {
@@ -20,13 +20,13 @@ public class Player extends GameObject {
 	}
 
 	void floor(Platform P) {
-		y = P.y - 20;
+		y = P.y -height;
 		velocity = 0;
 		air = 0;
 	}
 
-	void floor(floor P) {
-		y = P.y - 20;
+	void floor(Portal P) {
+		y = P.y - height;
 		velocity = 0;
 		air = 0;
 	}
@@ -68,12 +68,12 @@ public class Player extends GameObject {
 	}
 
 	void l() {
-		x -= mspeed;
+		x -= mspeed+speed;
 		jump = false;
 	}
 
 	void r() {
-		x += mspeed;
+		x += mspeed+speed;
 	}
 
 }

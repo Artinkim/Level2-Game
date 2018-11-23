@@ -3,9 +3,9 @@ package Game;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class floor extends GameObject {
+public class Portal extends GameObject {
 
-	floor(int a, int b, int c, int d) {
+	Portal(int a, int b, int c, int d) {
 		super(a, b, c, d);
 		// TODO Auto-generated constructor stub
 		
@@ -13,8 +13,7 @@ public class floor extends GameObject {
 	}
 
 	void draw(Graphics g) {
-		g.setColor(new Color(50,0,0));
-super.draw(g);
+	g.drawImage(GamePanel.portal,x,y,width,height,null);
 
 
 	}
