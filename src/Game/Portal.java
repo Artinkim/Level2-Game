@@ -9,12 +9,11 @@ public class Portal extends GameObject {
 		super(a, b, c, d);
 		// TODO Auto-generated constructor stub
 		
-
 	}
 
 	void draw(Graphics g) {
-	g.drawImage(GamePanel.portal,x,y,width,height,null);
-
+		g.drawImage(GamePanel.portal, x, y, width, height, null);
+		g.drawImage(GamePanel.portal, x, 25, width, height, null);
 
 	}
 }

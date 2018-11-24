@@ -1,5 +1,6 @@
 package Game;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ public class ObjectManager {
 	long enemyTimer7 = System.currentTimeMillis();
 	long scoreTime = System.currentTimeMillis();
 	int enemySpawnTime = 1000;
-	int PortalspawnTime = 1500;
 	int projectileSpawnTime = 2000;
 	int score = 0;
 	double World = 1;
@@ -36,8 +36,9 @@ public class ObjectManager {
 	double MS = 1;
 	boolean time = true;
 	boolean drawWorld = false;
+	Color c = new Color(255, 255, 255);
 
-	Platform f = new Platform(0, 600, 1400, 15);
+	Platform f = new Platform(0, 600, 2500, 15);
 
 	ObjectManager(Player a) {
 		p = a;
@@ -46,11 +47,13 @@ public class ObjectManager {
 	void Spawners() {
 		if (time == true) {
 			if (drawWorld == false) {
-				makeFloor();
+				makePortal();
 				makePowerUps();
 				makePlats();
 				makeProjectilesR();
 				score();
+				makeCoins();
+
 			}
 		}
 	}
@@ -58,14 +61,14 @@ public class ObjectManager {
 	void score() {
 		if (System.currentTimeMillis() - 1000 >= scoreTime) {
 			score += 100;
-			speed += .2;
+			speed += .03;
 			scoreTime = System.currentTimeMillis();
 		}
 	}
 
 	void makePlats() {
 		if (System.currentTimeMillis() - enemyTimer >= enemySpawnTime) {
-			plats.add(new Platform(1400, rand.nextInt(400) + 100, rand.nextInt(40) + 30, 10));
+			plats.add(new Platform(1400, rand.nextInt(400) + 100, rand.nextInt(30) + 50, 10));
 			enemyTimer = System.currentTimeMillis();
 		}
 	}
@@ -87,7 +90,7 @@ public class ObjectManager {
 		}
 	}
 
-	void makeFloor() {
+	void makePortal() {
 		if (System.currentTimeMillis() - enemyTimer4 >= rand.nextInt(2000) + 8000) {
 			Portals.add(new Portal(1300, 675, 50, 50));
 			enemyTimer4 = System.currentTimeMillis();
@@ -110,6 +113,29 @@ public class ObjectManager {
 	}
 
 	void draw(Graphics g) {
+
+		if (speed > World) {
+			MS = speed;
+			Draw = System.currentTimeMillis();
+			speed = 0;
+			p.speed = 0;
+			p.mspeed = 0;
+			p.velocity = 0;
+			p.gravity = 0;
+			drawWorld = true;
+			if (World < 10) {
+				enemySpawnTime -= 120;
+				projectileSpawnTime -= 180;
+			} else {
+				enemySpawnTime = 100;
+				projectileSpawnTime = 400;
+			}
+			c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+			World++;
+		}
+		g.setColor(c);
+		g.fillRect(10, 0, 1200, 800);
+		g.setColor(new Color(255, 255, 255));
 		f.draw(g);
 		for (Platform n : plats) {
 			n.draw(g);
@@ -137,22 +163,11 @@ public class ObjectManager {
 			g.drawString("World: " + (World - 1), 600, 400);
 		}
 
-		if (speed > World) {
-			MS = speed;
-			Draw = System.currentTimeMillis();
-			speed = 0;
-			p.speed = 0;
-			p.mspeed = 0;
-			p.velocity = 0;
-			p.gravity = 0;
-			drawWorld = true;
-			World++;
-		}
 	}
 
 	void update() {
 		p.speed = speed;
-		f.speed = speed;
+		f.speed = speed * 2;
 		f.update();
 
 		for (int j = 0; j < JPowers.size(); j++) {
@@ -229,11 +244,6 @@ public class ObjectManager {
 			coins.get(j).update();
 			if (coins.get(j).collisionBox.intersects(p.collisionBox)) {
 				score += 1000;
-				if (projectileSpawnTime <= 400) {
-					projectileSpawnTime = 400;
-				} else {
-					projectileSpawnTime -= 100;
-				}
 				coins.remove(coins.get(j));
 			}
 

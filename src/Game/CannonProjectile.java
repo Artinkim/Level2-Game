@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.util.Random;
 
 public class CannonProjectile extends GameObject {
-	Random rand = new Random();
-	int r;
 
 	CannonProjectile(int a, int b, int c, int d) {
 		super(a, b, c, d);

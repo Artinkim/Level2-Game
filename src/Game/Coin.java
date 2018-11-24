@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class Coin extends GameObject {
 	Random rand = new Random();
-	int r = rand.nextInt(2) + 3;
 
 	Coin(int a, int b, int c, int d) {
 		super(a, b, c, d);
@@ -15,7 +14,7 @@ public class Coin extends GameObject {
 	}
 
 	void update() {
-		y += r;
+		y += speed+3;
 		super.update();
 	}
 

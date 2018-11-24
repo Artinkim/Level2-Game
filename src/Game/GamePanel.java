@@ -22,6 +22,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	ObjectManager om;
 	Player p;
 	int state = 1;
+	int score;
 	public static BufferedImage player;
 	public static BufferedImage timepower;
 	public static BufferedImage jumppower;
@@ -56,33 +57,45 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void drawMenu(Graphics g) {
 		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, 2000, 2000);
-		g.setColor(new Color(0, 250, 0));
+		g.setColor(om.c);
 		g.setFont(new Font("Monospaced", Font.BOLD, 80));
 		g.drawString("Stay alive", 400, 250);
 		g.setFont(new Font("Monospaced", Font.BOLD, 20));
-		g.drawString("In this game you try to stay alive and collect coins to get a higher score.", 50, 350);
-		g.drawString("You start off with 3 lives if you get hit by the ROCKETS you loose one life", 50, 400);
-		g.drawString("Falling into the void instantly kills you. You have powerups to help you along the way", 50, 450);
+		g.drawString("The longer you stay alive the more points you get and collecting coins gives +1000 points", 25,
+				350);
+		g.drawString("You start off with 3 lives if you get hit by the ROCKETS you loose one life.", 25, 400);
+		g.drawString("Falling into the void instantly kills you. You have powerups to help you along the way.", 25,
+				450);
 		g.drawString("TIME stops time for 5 seconds, and JUMP adds another jump to your origional double jump(Stacks)",
-				50, 500);
-		g.drawString("You also have a teleporter beams at the bottom that teleport you to the top of the screen", 50,
-				550);
+				25, 500);
+		g.drawString("You also have a teleporter beams at the bottom that teleport you to the top of the screen", 25,
+				600);
+		g.drawString("Score, health, and jumps are displayed in the top left corner of the screen.", 20, 550);
+
+		g.drawString("Each world is progresively harder than the last.", 20, 650);
 	}
 
 	void drawGame(Graphics g) {
 		om.draw(g);
 		p.draw(g);
+		g.setFont(new Font("Arial", Font.PLAIN, 15));
 		g.drawString("Score: " + om.score, 20, 20);
 		g.drawString("Lives: " + p.lives, 120, 20);
 		g.drawString("Jumps: " + (p.jumps + 1), 180, 20);
-		g.drawString("Speed: " + om.speed, 280, 20);
-
+		g.drawString("World: " + om.speed, 280, 20);
 	}
 
 	void drawEnd(Graphics g) {
+		g.setColor(om.c);
+		g.fillRect(10, 0, 1200, 800);
 		g.setColor(new Color(0, 0, 0));
-		g.setFont(new Font("Comicsans", Font.BOLD, 80));
-		g.drawString("You got " + om.score, 320, 400);
+		g.setFont(new Font("Comicsans", Font.CENTER_BASELINE, 40));
+		g.drawString("You got to world " + (om.World - 1) + " and got " + om.score + " points.", 200, 300);
+		if (om.score > score) {
+			score = om.score;
+		}
+		g.drawString("HighScore: " + score, 450, 400);
+
 	}
 
 	@Override
@@ -110,20 +123,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 
 		// TODO Auto-generated method stub
-		if(om.drawWorld == false)
-		{
-		if (e.getKeyCode() == KeyEvent.VK_A) {
-			p.left = true;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_D) {
-			p.right = true;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			if (p.air < p.jumps) {
-				p.jumping = true;
+		if (om.drawWorld == false) {
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				p.left = true;
 			}
-			p.air++;
-		}
+			if (e.getKeyCode() == KeyEvent.VK_P) {
+				om.speed++;
+				p.lives += 2222;
+				p.jumps += 200;
+
+			}
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				p.right = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				if (p.air < p.jumps) {
+					p.jumping = true;
+				}
+				p.air++;
+			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (state > 2) {
@@ -155,7 +173,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		if (state == 2) {
 			om.Spawners();
-			om.makeCoins();
 			om.update();
 			p.update();
 		}

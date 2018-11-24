@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class JumpPowerUp extends GameObject {
 	Random rand = new Random();
-	int r = rand.nextInt(2) + 3;
 
 	JumpPowerUp(int a, int b, int c, int d) {
 		super(a, b, c, d);
@@ -15,7 +14,7 @@ public class JumpPowerUp extends GameObject {
 	}
 
 	void update() {
-		y += r;
+		y += speed+3;
 		super.update();
 	}
 

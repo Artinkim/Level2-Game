@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class TimePowerUp extends GameObject {
 	Random rand = new Random();
-	int r = rand.nextInt(2) + 3;
 
 	TimePowerUp(int a, int b, int c, int d) {
 		super(a, b, c, d);
@@ -15,7 +14,7 @@ public class TimePowerUp extends GameObject {
 	}
 
 	void update() {
-		y += r;
+		y += speed+3;
 		super.update();
 	}
 

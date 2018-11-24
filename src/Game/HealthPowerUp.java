@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class HealthPowerUp extends GameObject {
 	Random rand = new Random();
-	int r = rand.nextInt(2) + 3;
 
 	HealthPowerUp(int a, int b, int c, int d) {
 		super(a, b, c, d);
@@ -15,7 +14,7 @@ public class HealthPowerUp extends GameObject {
 	}
 
 	void update() {
-		y += r;
+		y += speed+3;
 		super.update();
 	}
 
