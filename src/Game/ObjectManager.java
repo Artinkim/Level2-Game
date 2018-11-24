@@ -10,12 +10,13 @@ import javax.swing.JTextPane;
 
 public class ObjectManager {
 	ArrayList<Platform> plats = new ArrayList<Platform>();
-	ArrayList<CannonProjectile> projectiles = new ArrayList<CannonProjectile>();
+	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	ArrayList<Coin> coins = new ArrayList<Coin>();
 	ArrayList<Portal> Portals = new ArrayList<Portal>();
 	ArrayList<TimePowerUp> TPowers = new ArrayList<TimePowerUp>();
 	ArrayList<JumpPowerUp> JPowers = new ArrayList<JumpPowerUp>();
 	ArrayList<HealthPowerUp> HPowers = new ArrayList<HealthPowerUp>();
+	ArrayList<Explosion> Explodes = new ArrayList<Explosion>();
 	Player p;
 	long Tim = System.currentTimeMillis();
 	long Draw = System.currentTimeMillis();
@@ -28,7 +29,7 @@ public class ObjectManager {
 	long enemyTimer6 = System.currentTimeMillis();
 	long enemyTimer7 = System.currentTimeMillis();
 	long scoreTime = System.currentTimeMillis();
-	int enemySpawnTime = 1000;
+	int enemySpawnTime = 900;
 	int projectileSpawnTime = 2000;
 	int score = 0;
 	double World = 1;
@@ -50,7 +51,7 @@ public class ObjectManager {
 				makePortal();
 				makePowerUps();
 				makePlats();
-				makeProjectilesR();
+				makeProjectiles();
 				score();
 				makeCoins();
 
@@ -97,10 +98,10 @@ public class ObjectManager {
 		}
 	}
 
-	void makeProjectilesR() {
+	void makeProjectiles() {
 
 		if (System.currentTimeMillis() - enemyTimer2 >= projectileSpawnTime) {
-			projectiles.add(new CannonProjectile(1400, rand.nextInt(400) + 100, 60, 15));
+			projectiles.add(new Projectile(1400, rand.nextInt(400) + 100, 60, 15));
 			enemyTimer2 = System.currentTimeMillis();
 		}
 	}
@@ -134,16 +135,19 @@ public class ObjectManager {
 			World++;
 		}
 		g.setColor(c);
-		g.fillRect(10, 0, 1200, 800);
+		g.fillRect(0, 0, 1300, 800);
 		g.setColor(new Color(255, 255, 255));
 		f.draw(g);
 		for (Platform n : plats) {
 			n.draw(g);
 		}
-		for (CannonProjectile n : projectiles) {
+		for (Projectile n : projectiles) {
 			n.draw(g);
 		}
 		for (Coin n : coins) {
+			n.draw(g);
+		}
+		for (Explosion n : Explodes) {
 			n.draw(g);
 		}
 		for (Portal n : Portals) {
@@ -212,11 +216,33 @@ public class ObjectManager {
 			}
 		}
 
-		for (Platform n : plats) {
-			n.speed = speed;
-			n.update();
-			if (n.collisionBox.intersects(p.collisionBox)) {
-				p.floor(n);
+		for (int j = 0; j < projectiles.size(); j++) {
+			projectiles.get(j).speed = speed * 2;
+			projectiles.get(j).update();
+			if (projectiles.get(j).collisionBox.intersects(p.collisionBox)) {
+				p.lives--;
+				Explodes.add(new Explosion(projectiles.get(j).x-60, projectiles.get(j).y-15));
+				projectiles.remove(projectiles.get(j));
+
+			}
+		}
+
+		for (int j = 0; j < plats.size(); j++) {
+			plats.get(j).speed = speed;
+			plats.get(j).update();
+			if (plats.get(j).collisionBox.intersects(p.collisionBox)) {
+				p.floor(plats.get(j));
+			}
+		}
+
+		for (int j = 0; j < plats.size(); j++) { // Checking collision of missiles and platforms
+			for (int q = 0; q < projectiles.size(); q++) {
+				if (plats.get(j).collisionBox.intersects(projectiles.get(q).collisionBox)) {
+					Explodes.add(new Explosion(projectiles.get(q).x-60, projectiles.get(q).y-15));
+					plats.remove(plats.get(j));
+					projectiles.remove(projectiles.get(q));
+
+				}
 			}
 		}
 
@@ -230,15 +256,6 @@ public class ObjectManager {
 			}
 		}
 
-		for (int j = 0; j < projectiles.size(); j++) {
-			projectiles.get(j).speed = speed;
-			projectiles.get(j).update();
-			if (projectiles.get(j).collisionBox.intersects(p.collisionBox)) {
-				p.lives--;
-				projectiles.remove(projectiles.get(j));
-
-			}
-		}
 		for (int j = 0; j < coins.size(); j++) {
 			coins.get(j).speed = speed;
 			coins.get(j).update();
@@ -255,6 +272,13 @@ public class ObjectManager {
 				p.lives++;
 				HPowers.remove(HPowers.get(j));
 
+			}
+		}
+
+		for (int j = 0; j < Explodes.size(); j++) {
+			Explodes.get(j).update();
+			if (Explodes.get(j).dead == true) {
+				Explodes.remove(Explodes.get(j));
 			}
 		}
 	}

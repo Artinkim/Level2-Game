@@ -10,11 +10,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
 import javafx.scene.input.KeyCode;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
@@ -30,22 +28,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage projectile;
 	public static BufferedImage portal;
 	public static BufferedImage health;
+	public static BufferedImage explosion;
 
 	GamePanel() {
 
 		tim = new Timer(1000 / 60, this);
 		tim.start();
-		p = new Player(200, 200, 20, 50);
+		p = new Player(200, 200, 30, 30);
 		om = new ObjectManager(p);
 
 		try {
-			player = ImageIO.read(this.getClass().getResourceAsStream("sm.png"));
+			player = ImageIO.read(this.getClass().getResourceAsStream("player.png"));
 			timepower = ImageIO.read(this.getClass().getResourceAsStream("clock.png"));
 			jumppower = ImageIO.read(this.getClass().getResourceAsStream("up_arrow.png"));
 			coin = ImageIO.read(this.getClass().getResourceAsStream("coin.png"));
 			projectile = ImageIO.read(this.getClass().getResourceAsStream("missile.png"));
 			portal = ImageIO.read(this.getClass().getResourceAsStream("portal.gif"));
 			health = ImageIO.read(this.getClass().getResourceAsStream("health.png"));
+			explosion = ImageIO.read(this.getClass().getResourceAsStream("explosion.png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -72,7 +72,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				600);
 		g.drawString("Score, health, and jumps are displayed in the top left corner of the screen.", 20, 550);
 
-		g.drawString("Each world is progresively harder than the last.", 20, 650);
+		g.drawString("Each world is progresively harder than the last, space to jump, arrow keys to move(or A and D)",
+				20, 650);
 	}
 
 	void drawGame(Graphics g) {
@@ -82,12 +83,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Score: " + om.score, 20, 20);
 		g.drawString("Lives: " + p.lives, 120, 20);
 		g.drawString("Jumps: " + (p.jumps + 1), 180, 20);
-		g.drawString("World: " + om.speed, 280, 20);
+		g.drawString("World: " + (om.World - 1), 280, 20);
 	}
 
 	void drawEnd(Graphics g) {
 		g.setColor(om.c);
-		g.fillRect(10, 0, 1200, 800);
+		g.fillRect(0, 0, 1300, 800);
 		g.setColor(new Color(0, 0, 0));
 		g.setFont(new Font("Comicsans", Font.CENTER_BASELINE, 40));
 		g.drawString("You got to world " + (om.World - 1) + " and got " + om.score + " points.", 200, 300);
@@ -121,21 +122,28 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-
-		// TODO Auto-generated method stub
 		if (om.drawWorld == false) {
-			if (e.getKeyCode() == KeyEvent.VK_A) {
-				p.left = true;
-			}
 			if (e.getKeyCode() == KeyEvent.VK_P) {
 				om.speed++;
 				p.lives += 2222;
 				p.jumps += 200;
-
 			}
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				p.left = true;
+			}
+
 			if (e.getKeyCode() == KeyEvent.VK_D) {
 				p.right = true;
 			}
+
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				p.left = true;
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				p.right = true;
+			}
+
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				if (p.air < p.jumps) {
 					p.jumping = true;
@@ -144,9 +152,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (state > 2) {
-				p = new Player(200, 200, 20, 50);
+			if (state == 1) {
+				p = new Player(200, 200, 30, 30);
 				om = new ObjectManager(p);
+			}
+			if (state > 2) {
 				state = 1;
 			} else {
 				state++;
@@ -161,6 +171,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			p.left = false;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_D) {
+			p.right = false;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			p.left = false;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			p.right = false;
 		}
 	}

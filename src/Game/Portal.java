@@ -13,7 +13,7 @@ public class Portal extends GameObject {
 
 	void draw(Graphics g) {
 		g.drawImage(GamePanel.portal, x, y, width, height, null);
-		g.drawImage(GamePanel.portal, x, 25, width, height, null);
+		g.drawImage(GamePanel.portal, x, 0, width, height, null);
 
 	}
 }
