@@ -14,12 +14,14 @@ public class Coin extends GameObject {
 	}
 
 	void update() {
-		y += speed+3;
+		if (speed != 0) {
+			y += speed + 3;
+		}
 		super.update();
 	}
 
 	void draw(Graphics g) {
-		g.drawImage(GamePanel.coin,x,y,width,height,null);
+		g.drawImage(GamePanel.coin, x, y, width, height, null);
 	}
 
 }

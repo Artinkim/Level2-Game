@@ -37,12 +37,15 @@ public class ObjectManager {
 	double MS = 1;
 	boolean time = true;
 	boolean drawWorld = false;
-	Color c = new Color(255, 255, 255);
+	Color c;
+	Color c2;
 
 	Platform f = new Platform(0, 600, 2500, 15);
 
-	ObjectManager(Player a) {
+	ObjectManager(Player a, Color b,Color second) {
 		p = a;
+		c = b;
+		c2 = second;
 	}
 
 	void Spawners() {
@@ -62,7 +65,7 @@ public class ObjectManager {
 	void score() {
 		if (System.currentTimeMillis() - 1000 >= scoreTime) {
 			score += 100;
-			speed += .03;
+			speed += .04;
 			scoreTime = System.currentTimeMillis();
 		}
 	}
@@ -125,18 +128,21 @@ public class ObjectManager {
 			p.gravity = 0;
 			drawWorld = true;
 			if (World < 10) {
-				enemySpawnTime -= 120;
+				enemySpawnTime -= 100;
 				projectileSpawnTime -= 180;
 			} else {
 				enemySpawnTime = 100;
 				projectileSpawnTime = 400;
 			}
-			c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+			if (World > 1) {
+				c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+				c2 = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+			}
 			World++;
 		}
 		g.setColor(c);
 		g.fillRect(0, 0, 1300, 800);
-		g.setColor(new Color(255, 255, 255));
+		g.setColor(c2);
 		f.draw(g);
 		for (Platform n : plats) {
 			n.draw(g);
@@ -199,7 +205,7 @@ public class ObjectManager {
 			}
 		}
 		if (time == false) {
-			if (System.currentTimeMillis() - 5000 >= Tim) { // For time power up length
+			if (System.currentTimeMillis() - 3000 >= Tim) { // For time power up length
 				time = true;
 				speed = MS;
 
@@ -221,7 +227,7 @@ public class ObjectManager {
 			projectiles.get(j).update();
 			if (projectiles.get(j).collisionBox.intersects(p.collisionBox)) {
 				p.lives--;
-				Explodes.add(new Explosion(projectiles.get(j).x-60, projectiles.get(j).y-15));
+				Explodes.add(new Explosion(projectiles.get(j).x - 60, projectiles.get(j).y - 15));
 				projectiles.remove(projectiles.get(j));
 
 			}
@@ -238,7 +244,7 @@ public class ObjectManager {
 		for (int j = 0; j < plats.size(); j++) { // Checking collision of missiles and platforms
 			for (int q = 0; q < projectiles.size(); q++) {
 				if (plats.get(j).collisionBox.intersects(projectiles.get(q).collisionBox)) {
-					Explodes.add(new Explosion(projectiles.get(q).x-60, projectiles.get(q).y-15));
+					Explodes.add(new Explosion(projectiles.get(q).x - 60, projectiles.get(q).y - 15));
 					plats.remove(plats.get(j));
 					projectiles.remove(projectiles.get(q));
 

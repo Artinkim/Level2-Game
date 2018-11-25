@@ -14,7 +14,9 @@ public class HealthPowerUp extends GameObject {
 	}
 
 	void update() {
-		y += speed+3;
+		if (speed != 0) {
+			y += speed + 3;
+		}
 		super.update();
 	}
 
