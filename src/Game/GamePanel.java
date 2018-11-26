@@ -88,7 +88,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(new Font("Arial", Font.PLAIN, 15));
 		g.drawString("Score: " + om.score, 20, 20);
 		g.drawString("Lives: " + p.lives, 120, 20);
-		g.drawString("Extra Jumps: " + (p.jumps + 1), 200, 20);
+		g.drawString("Jumps: " + (p.jumps + 1), 200, 20);
 	}
 
 	void drawEnd(Graphics g) {
@@ -103,7 +103,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("HighScore: " + score, 450, 300);
 		g.drawString("Press enter to go to menu screen", 250, 400);
 		g.drawString("Press space to play again", 325, 500);
-
 	}
 
 	@Override
@@ -118,7 +117,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		} else if (state == 3) {
 			drawEnd(g);
 		}
-
 	}
 
 	@Override
