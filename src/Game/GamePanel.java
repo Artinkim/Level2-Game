@@ -23,6 +23,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Player p;
 	int state = 1;
 	int score;
+	boolean PressingSpace = false;
 	Random rand = new Random();
 	Color c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 	Color c2 = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
@@ -145,12 +146,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				if (p.air < p.jumps) {
-					p.jumping = true;
+				if (PressingSpace == false) {
+					if (p.air < p.jumps) {
+						p.jumping = true;
+					}
+					p.air++;
+					PressingSpace = true;
 				}
-				p.air++;
 			}
 		}
+		
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			if (state == 3) {
 				c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
@@ -190,6 +195,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			p.right = false;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			PressingSpace = false;
 		}
 	}
 
