@@ -148,14 +148,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				if (PressingSpace == false) {
 					if (p.air < p.jumps) {
+						p.air++;
 						p.jumping = true;
+						PressingSpace = true;
 					}
-					p.air++;
-					PressingSpace = true;
+					
 				}
 			}
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			if (state == 3) {
 				c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));

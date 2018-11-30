@@ -20,7 +20,7 @@ public class Player extends GameObject {
 	}
 
 	void floor(Platform P) {
-		y = P.y -height;
+		y = P.y - height;
 		velocity = 0;
 		air = 0;
 	}
@@ -68,12 +68,12 @@ public class Player extends GameObject {
 	}
 
 	void l() {
-		x -= mspeed+speed;
+		x -= mspeed + speed;
 		jump = false;
 	}
 
 	void r() {
-		x += mspeed+speed;
+		x += mspeed + speed;
 	}
 
 }
