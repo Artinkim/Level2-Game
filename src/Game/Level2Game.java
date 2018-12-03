@@ -11,8 +11,9 @@ public class Level2Game {
 
 	JFrame frame;
 	GamePanel gpanel;
-	final int width = 1200;
-	final int height = 800;
+	//final int width = 1200;
+	//final int height = 800;
+
 	Level2Game() {
 		frame = new JFrame();
 		gpanel = new GamePanel();
@@ -23,6 +24,8 @@ public class Level2Game {
 		frame.add(gpanel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addKeyListener(gpanel);
-		frame.setSize(width, height);
+		//frame.setSize(width, height);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
 	}
 }

@@ -79,17 +79,17 @@ public class ObjectManager {
 
 	void makePowerUps() {
 		if (System.currentTimeMillis() - enemyTimer5 >= rand.nextInt(15000) + 15000) {
-			TPowers.add(new TimePowerUp(0, 0, 20, 20));
+			TPowers.add(new TimePowerUp(0, 0, 30, 30));
 			enemyTimer5 = System.currentTimeMillis();
 		}
 
 		if (System.currentTimeMillis() - enemyTimer6 >= rand.nextInt(5000) + 25000) {
-			JPowers.add(new JumpPowerUp(0, 0, 20, 20));
+			JPowers.add(new JumpPowerUp(0, 0, 30, 30));
 			enemyTimer6 = System.currentTimeMillis();
 		}
 
 		if (System.currentTimeMillis() - enemyTimer7 >= rand.nextInt(15000) + 20000) {
-			HPowers.add(new HealthPowerUp(0, 0, 20, 20));
+			HPowers.add(new HealthPowerUp(0, 0, 30, 30));
 			enemyTimer7 = System.currentTimeMillis();
 		}
 	}

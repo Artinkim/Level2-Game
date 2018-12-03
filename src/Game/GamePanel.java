@@ -74,10 +74,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("You start off with 3 lives if you get hit by the ROCKETS you loose one life.", 25, 400);
 		g.drawString("Falling into the void instantly kills you. You have powerups to help you along the way.", 25,
 				450);
-		g.drawString("TIME stops time for 3 seconds, and JUMP adds another jump to your origional double jump(Stacks)",
+		g.drawString("     stops time for 3 seconds, and      adds another jump to your origional double jump(Stacks)",
 				25, 500);
+		g.drawImage(GamePanel.timepower, 40, 470, 30, 30, null);
+		g.drawImage(GamePanel.jumppower, 450, 470, 30, 30, null);
+		g.drawImage(GamePanel.health, 40, 520, 30, 30, null);
 		g.drawString("You also have portals at the bottom of the screen that teleport you to the top portal.", 25, 600);
-		g.drawString("Score, health, and jumps are displayed in the top left corner of the screen.", 20, 550);
+		g.drawString("     +1 health. Score, health, and jumps are displayed in the top left corner of the screen.", 20,
+				550);
 
 		g.drawString("Each world is progresively harder than the last, space to jump, arrow keys to move(or A and D)",
 				20, 650);
@@ -152,7 +156,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 						p.jumping = true;
 						PressingSpace = true;
 					}
-					
+
 				}
 			}
 		}
