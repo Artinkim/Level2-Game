@@ -25,8 +25,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int score;
 	boolean PressingSpace = false;
 	Random rand = new Random();
-	Color c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-	Color c2 = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+	Color c = new Color(0,0,0);
+	Color c2 = new Color(255,255,255);
 	public static BufferedImage player;
 	public static BufferedImage timepower;
 	public static BufferedImage jumppower;

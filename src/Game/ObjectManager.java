@@ -39,10 +39,13 @@ public class ObjectManager {
 	boolean drawWorld = false;
 	Color c;
 	Color c2;
+	int Color3;
+	int Color1;
+	int Color2;
 
 	Platform f = new Platform(0, 600, 2500, 15);
 
-	ObjectManager(Player a, Color b,Color second) {
+	ObjectManager(Player a, Color b, Color second) {
 		p = a;
 		c = b;
 		c2 = second;
@@ -79,17 +82,17 @@ public class ObjectManager {
 
 	void makePowerUps() {
 		if (System.currentTimeMillis() - enemyTimer5 >= rand.nextInt(15000) + 15000) {
-			TPowers.add(new TimePowerUp(0, 0, 30, 30));
+			TPowers.add(new TimePowerUp(0, 0, 25, 25));
 			enemyTimer5 = System.currentTimeMillis();
 		}
 
 		if (System.currentTimeMillis() - enemyTimer6 >= rand.nextInt(5000) + 25000) {
-			JPowers.add(new JumpPowerUp(0, 0, 30, 30));
+			JPowers.add(new JumpPowerUp(0, 0, 25, 25));
 			enemyTimer6 = System.currentTimeMillis();
 		}
 
 		if (System.currentTimeMillis() - enemyTimer7 >= rand.nextInt(15000) + 20000) {
-			HPowers.add(new HealthPowerUp(0, 0, 30, 30));
+			HPowers.add(new HealthPowerUp(0, 0, 25, 25));
 			enemyTimer7 = System.currentTimeMillis();
 		}
 	}
@@ -136,7 +139,12 @@ public class ObjectManager {
 			}
 			if (World > 1) {
 				c = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-				c2 = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+				Color1 = rand.nextInt(255);
+				Color2 = rand.nextInt(255);
+				Color3 = rand.nextInt(255);
+				if ((int) c.getRed() + (int) c.getBlue() + (int) c.getGreen() + 70 > Color1 + Color2 + Color3 || (int) c.getRed() +  (int) c.getBlue() + (int) c.getGreen() - 70 < Color1 + Color2 + Color3) {
+					c2 = new Color(Color1, Color2, Color3);
+				}
 			}
 			World++;
 		}
@@ -171,8 +179,13 @@ public class ObjectManager {
 		if (drawWorld == true) {
 			g.setFont(new Font("Monospaced", Font.BOLD, 80));
 			g.drawString("World: " + (World - 1), 600, 400);
+			g.fillRect(300, (int) (100+(System.currentTimeMillis() - Draw)/5), 100, (int) (400-(System.currentTimeMillis() - Draw )/5));
 		}
-
+		if(time == false) {
+			g.setColor(c2);
+			g.fillRect(100, (int) (100+(System.currentTimeMillis() - Tim )/5), 50, (int) (600-(System.currentTimeMillis() - Tim )/5));
+		}
+		
 	}
 
 	void update() {
@@ -205,7 +218,8 @@ public class ObjectManager {
 			}
 		}
 		if (time == false) {
-			if (System.currentTimeMillis() - 3000 >= Tim) { // For time power up length
+			if (System.currentTimeMillis() - 3000 >= Tim) { // For time power up
+															// length
 				time = true;
 				speed = MS;
 
@@ -213,7 +227,9 @@ public class ObjectManager {
 		}
 
 		if (drawWorld == true) {
-			if (System.currentTimeMillis() - 2000 >= Draw) { // For drawing the new world length
+			if (System.currentTimeMillis() - 2000 >= Draw) { // For drawing the
+																// new world
+																// length
 				speed = MS;
 				p.gravity = 1;
 				p.mspeed = 5;
@@ -241,7 +257,8 @@ public class ObjectManager {
 			}
 		}
 
-		for (int j = 0; j < plats.size(); j++) { // Checking collision of missiles and platforms
+		for (int j = 0; j < plats.size(); j++) { // Checking collision of
+													// missiles and platforms
 			for (int q = 0; q < projectiles.size(); q++) {
 				if (plats.get(j).collisionBox.intersects(projectiles.get(q).collisionBox)) {
 					Explodes.add(new Explosion(projectiles.get(q).x - 60, projectiles.get(q).y - 15));
